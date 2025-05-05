@@ -8,28 +8,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService {
-
- 
-    // Get All Products
     public List<Product> getAllProducts() {
-        List<Product> products = new ArrayList<>();
-        String query = "SELECT * FROM spare_parts";
-        try (Connection connection = DBConnector.getConnection();
-             Statement stmt = connection.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
+        List<Product> productList = new ArrayList<>();
+
+        String sql = "SELECT p.id, p.name, p.image, p.description, p.price, " +
+                     "b.name AS brand_name, c.name AS category_name " +
+                     "FROM spare_parts p " +
+                     "JOIN brands b ON p.brand_id = b.id " +
+                     "JOIN categories c ON p.category_id = c.id";
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 Product product = new Product();
                 product.setId(rs.getInt("id"));
                 product.setName(rs.getString("name"));
-                product.setPrice(rs.getDouble("price"));
                 product.setImage(rs.getString("image"));
-                product.setDescription("description");
-                products.add(product);
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getDouble("price"));
+                product.setBrandName(rs.getString("brand_name"));
+                product.setCategoryName(rs.getString("category_name"));
+                productList.add(product);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return products;
-    }
 
+        return productList;
+    }
 }
