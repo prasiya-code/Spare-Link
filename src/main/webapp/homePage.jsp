@@ -23,14 +23,14 @@
         <div 
           class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer"
           @click="open = true; selectedProduct = {
-            image: 'images/${product.image}',
+            image: 'images/${product.id}.jpg',
             name: '${product.name}',
             price: '${product.price}',
             description: '${product.description}',
             brandName: '${product.brandName}',
             categoryName: '${product.categoryName}'
           }; quantity = 1;">
-          <img src="images/${product.image}" alt="${product.name}" class="w-full h-48 object-contain p-4">
+          <img src="images/${product.id}.jpg" alt="${product.name}" class="w-full h-48 object-contain p-4">
           <div class="p-4">
             <h3 class="text-lg font-semibold mb-2">${product.name}</h3>
             <p class="text-cyan-600 font-bold text-lg mb-4">LKR ${product.price}</p>

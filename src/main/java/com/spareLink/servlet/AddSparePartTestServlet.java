@@ -60,10 +60,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 import com.spareLink.util.DBConnector;
 
@@ -74,7 +71,6 @@ public class AddSparePartTestServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Set encoding
         request.setCharacterEncoding("UTF-8");
 
         String name = request.getParameter("name");
@@ -87,44 +83,63 @@ public class AddSparePartTestServlet extends HttpServlet {
         int brandId = Integer.parseInt(brandIdStr);
         int categoryId = Integer.parseInt(categoryIdStr);
 
-        // Step 1: Get image part
         Part filePart = request.getPart("image");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-        // Step 2: Resolve path to /images in webapp
-        String uploadDir = request.getServletContext().getRealPath("/images");
-        File imageDir = new File(uploadDir);
-        if (!imageDir.exists()) {
-            imageDir.mkdirs(); // Create /images if not exists
-        }
-
-        // Step 3: Save file to /images
-        String filePath = uploadDir + File.separator + fileName;
-        filePart.write(filePath);
-
-        // Step 4: Save relative path for DB (not full path)
-        String imagePath = "images/" + fileName;
-
-        // Step 5: Insert into database
+        // Step 1: Insert the record without the image path
+        int generatedId = -1;
         try (Connection conn = DBConnector.getConnection()) {
-            String sql = "INSERT INTO spare_parts (name, price, image, description, brand_id, category_id) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            String insertSql = "INSERT INTO spare_parts (name, price, image, description, brand_id, category_id) VALUES (?, ?, '', ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, name);
             stmt.setDouble(2, price);
-            stmt.setString(3, imagePath);
-            stmt.setString(4, description);
-            stmt.setInt(5, brandId);
-            stmt.setInt(6, categoryId);
+            stmt.setString(3, description);
+            stmt.setInt(4, brandId);
+            stmt.setInt(5, categoryId);
 
             int rows = stmt.executeUpdate();
             if (rows > 0) {
-                response.sendRedirect("test-add-spare-part.jsp?success=true");
+                ResultSet generatedKeys = stmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    generatedId = generatedKeys.getInt(1);
+                }
             } else {
                 response.sendRedirect("test-add-spare-part.jsp?error=true");
+                return;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendRedirect("test-add-spare-part.jsp?error=true");
+            return;
         }
+
+        // Step 2: Save the image file with the generated ID as the name
+        if (generatedId > 0 && filePart != null && filePart.getSize() > 0) {
+            String uploadDir = request.getServletContext().getRealPath("/images");
+            File imageDir = new File(uploadDir);
+            if (!imageDir.exists()) {
+                imageDir.mkdirs();
+            }
+
+            String imageName = generatedId + ".jpg";
+            String fullPath = uploadDir + File.separator + imageName;
+            filePart.write(fullPath);
+
+            String imagePath = "images/" + imageName;
+
+            // Step 3: Update the record with the image path
+            try (Connection conn = DBConnector.getConnection()) {
+                String updateSql = "UPDATE spare_parts SET image = ? WHERE id = ?";
+                PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+                updateStmt.setString(1, imagePath);
+                updateStmt.setInt(2, generatedId);
+                updateStmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.sendRedirect("test-add-spare-part.jsp?error=true");
+                return;
+            }
+        }
+
+        response.sendRedirect("test-add-spare-part.jsp?success=true");
     }
 }
