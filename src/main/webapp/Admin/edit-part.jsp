@@ -29,7 +29,7 @@
 
     <h2 class="text-2xl font-bold text-cyan-400 mb-6 text-center">Edit Spare Part</h2>
 
-    <form action="edit-part-form" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <form action="EditPartServlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
         <input type="hidden" name="id" value="<%= part.getId() %>">
 
         <!-- Name -->

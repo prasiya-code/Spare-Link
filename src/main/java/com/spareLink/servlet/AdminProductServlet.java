@@ -10,10 +10,11 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/admin/products")
+@WebServlet("/products")
 public class AdminProductServlet extends HttpServlet {
 
-    private final SparePartService sparePartService = new SparePartService();
+	private static final long serialVersionUID = 1L;
+	private final SparePartService sparePartService = new SparePartService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -30,6 +31,7 @@ public class AdminProductServlet extends HttpServlet {
             dispatcher.forward(request, response);
 
         } catch (Exception e) {
+        
             e.printStackTrace();
             response.sendRedirect("error.jsp");
         }

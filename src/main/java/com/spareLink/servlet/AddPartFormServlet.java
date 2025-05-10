@@ -21,7 +21,8 @@ import java.util.List;
 @WebServlet("/add-part-form")
 public class AddPartFormServlet extends HttpServlet {
 
-    private final BrandService brandService = new BrandService();
+	private static final long serialVersionUID = 1L;
+	private final BrandService brandService = new BrandService();
     private final CategoryService categoryService = new CategoryService();
 
     @Override
@@ -79,8 +80,8 @@ public class AddPartFormServlet extends HttpServlet {
                 updateStmt.close();
             }
 
-            // ✅ Redirect to product list after success
-            response.sendRedirect(request.getContextPath() + "/admin/products");
+            //Redirect to product list after success
+            response.sendRedirect(request.getContextPath() + "/products");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,6 +98,6 @@ public class AddPartFormServlet extends HttpServlet {
 
         request.setAttribute("brands", brands);
         request.setAttribute("categories", categories);
-        request.getRequestDispatcher("add-part.jsp").forward(request, response);
+        request.getRequestDispatcher("Admin/add-part.jsp").forward(request, response);
     }
 }

@@ -20,25 +20,38 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       <c:forEach var="product" items="${spare_parts}">
+        
+        <!-- Set the image path and other properties here -->
+        <c:set var="imagePath" value="${pageContext.request.contextPath}/images/${product.id}.jpg" />
+        <c:set var="productName" value="${product.name}" />
+        <c:set var="productPrice" value="${product.price}" />
+        <c:set var="productDescription" value="${product.description}" />
+        <c:set var="productBrand" value="${product.brandName}" />
+        <c:set var="productCategory" value="${product.categoryName}" />
+
+        <!-- Product Card -->
         <div 
           class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer"
-          @click="open = true; selectedProduct = {
-            image: '${pageContext.request.contextPath}/images/${product.id}.jpg',
-            name: '${product.name}',
-            price: '${product.price}',
-            description: '${product.description}',
-            brandName: '${product.brandName}',
-            categoryName: '${product.categoryName}'
-          }; quantity = 1;">
-          <img src="${pageContext.request.contextPath}/images/${product.id}.jpg" alt="${product.name}" class="w-full h-48 object-contain p-4">
+          x-data="{ 
+            image: '${imagePath}',
+            name: '${productName}',
+            price: '${productPrice}',
+            description: '${productDescription}',
+            brandName: '${productBrand}',
+            categoryName: '${productCategory}' }"
+          @click="open = true; selectedProduct = { 
+            image, name, price, description, brandName, categoryName }; quantity = 1;">
+          
+          <img :src="image" alt="Product Image" class="w-full h-48 object-contain p-4">
           <div class="p-4">
-            <h3 class="text-lg font-semibold mb-2">${product.name}</h3>
-            <p class="text-cyan-600 font-bold text-lg mb-4">LKR ${product.price}</p>
+            <h3 class="text-lg font-semibold mb-2" x-text="name"></h3>
+            <p class="text-cyan-600 font-bold text-lg mb-4" x-text="'LKR ' + price"></p>
             <button class="bg-cyan-600 text-white px-4 py-2 rounded w-full hover:bg-cyan-700 transition">
               <i class="fas fa-cart-plus mr-2"></i>Add to Cart
             </button>
           </div>
         </div>
+        
       </c:forEach>
     </div>
   </main>
