@@ -6,6 +6,7 @@ import com.spareLink.service.BrandService;
 import com.spareLink.service.CategoryService;
 import com.spareLink.util.DBConnector;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +30,7 @@ public class AddPartFormServlet extends HttpServlet {
 
         request.setCharacterEncoding("UTF-8");
 
-        try {
+        try (Connection conn = DBConnector.getConnection()) {
             // Read form inputs
             String name = request.getParameter("name");
             double price = Double.parseDouble(request.getParameter("price"));
@@ -42,7 +43,6 @@ public class AddPartFormServlet extends HttpServlet {
 
             // Step 1: Insert product without image
             int productId = 0;
-            Connection conn = DBConnector.getConnection();
             String insertSql = "INSERT INTO spare_parts (name, price, quantity, status, brand_id, category_id, description, image) VALUES (?, ?, ?, ?, ?, ?, ?, '')";
             PreparedStatement stmt = conn.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, name);
@@ -79,18 +79,19 @@ public class AddPartFormServlet extends HttpServlet {
                 updateStmt.close();
             }
 
-            conn.close();
-            response.sendRedirect("add-part-form?success=true");
+            // ✅ Redirect to product list after success
+            response.sendRedirect(request.getContextPath() + "/admin/products");
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("add-part-form?error=true");
+            response.sendRedirect(request.getContextPath() + "/add-part-form?error=true");
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         List<Brand> brands = brandService.getAllBrands();
         List<Category> categories = categoryService.getAllCategories();
 

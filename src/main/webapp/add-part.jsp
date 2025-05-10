@@ -22,19 +22,19 @@
 
 	
 
-	<% 
-	    String success = request.getParameter("success");
-	    String error = request.getParameter("error");
-	    if ("true".equals(success)) { 
+<!--  	<% 
+	   // String success = request.getParameter("success");
+	   // String error = request.getParameter("error");
+	   // if ("true".equals(success)) { 
 	%>
 	    <div class="text-green-500 mb-4"> Spare part added successfully!</div>
 	<% 
-	    } else if ("true".equals(error)) { 
+	   // } else if ("true".equals(error)) { 
 	%>
 	    <div class="text-red-500 mb-4">❌ Failed to add spare part. Please try again.</div>
 	<% 
-	    } 
-	%>
+	//    } 
+	%>-->
     <h2 class="text-2xl font-bold text-cyan-400 mb-6 text-center">Add New Spare Part</h2>
 
     <form action="add-part-form" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">

@@ -11,11 +11,15 @@ public class SparePart {
     private int quantity;
     private String status; // Should be one of: InStock, LowStock, OutOfStock
 
+    // New fields for joined data
+    private String brandName;
+    private String categoryName;
+
     // Constructors
     public SparePart() {}
 
     public SparePart(int id, String name, double price, String image, String description,
-                   int brandId, int categoryId, int quantity, String status) {
+                     int brandId, int categoryId, int quantity, String status) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -98,5 +102,22 @@ public class SparePart {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    // New Getters and Setters for brandName and categoryName
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

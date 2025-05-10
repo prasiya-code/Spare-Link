@@ -52,8 +52,6 @@
         <i class="fab fa-apple-pay"></i>
       </div>
     </div>
-    <!-- cfcfnfhc hcfhchch -->
-    hgjvhjvhjvhjvhj
 
     <!-- Contact -->
     <div>
