@@ -103,5 +103,18 @@ public class SparePartService {
 
         return spareParts;
     }
+    
+    public boolean deleteSparePartById(int id) {
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql = "DELETE FROM spare_parts WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 }

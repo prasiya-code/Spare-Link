@@ -16,6 +16,7 @@
 </head>
 <body class="bg-gray-50 text-gray-200 font-sans">
 
+
 <main class="bg-[#0f172a] text-gray-200 min-h-screen p-6 space-y-8">
 
   <!-- Page Title -->
@@ -26,10 +27,7 @@
     </div>
   </div>
 
-  <div x-data="{
-    showViewModal: false,
-    selected: {}
-  }">
+  <div x-data="{}">
 
     <!-- Toolbar -->
     <div class="flex justify-end items-center mb-4 space-x-2">
@@ -86,29 +84,14 @@
                     <td class="py-2 px-4">In Stock</td>
                     <td class="py-2 px-4">
                       <div class="flex space-x-2">
-                        <!-- View Button with data-* attributes -->
-					<button
-					  @click="selected = {
-					    id: '${product.id}',
-					    photo: '<c:url value="/images/${product.id}.jpg"/>',
-					    name: '${product.name}',
-					    category: '${product.categoryName}',
-					    description: '${product.description}',
-					    supplier: '${product.brandName}',
-					    quantity: '-', 
-					    status: 'In Stock'
-					  }; showViewModal = true"
-					  class="bg-[#06b6d4] text-white px-3 py-1 rounded shadow hover:bg-[#0891b2] transition flex items-center">
-					  <i class="fas fa-eye mr-1"></i> View
-					</button>
-
                         <!-- Edit Button -->
-						<a href="EditPartServlet?action=edit&id=${product.id}">
-						 <button type="submit"class="bg-yellow-400 text-white px-3 py-1 rounded shadow hover:bg-yellow-500 transition flex items-center">
-						   <i class="fas fa-edit mr-1"></i> Edit
-						  </button>
-						</a>
-						                        <!-- Delete Button -->
+                        <a href="EditPartServlet?action=edit&id=${product.id}">
+                          <button type="button" class="bg-yellow-400 text-white px-3 py-1 rounded shadow hover:bg-yellow-500 transition flex items-center">
+                            <i class="fas fa-edit mr-1"></i> Edit
+                          </button>
+                        </a>
+
+                        <!-- Delete Button -->
                         <form action="<c:url value='/DeletePartServlet'/>" method="post" onsubmit="return confirm('Are you sure you want to delete this part?');">
                           <input type="hidden" name="id" value="${product.id}" />
                           <button type="submit"
@@ -124,26 +107,6 @@
             </c:choose>
           </tbody>
         </table>
-      </div>
-    </div>
-
-    <!-- Modal (optional if you implement) -->
-    <div x-show="showViewModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-      <div class="bg-white text-black p-6 rounded-xl w-1/2 relative">
-        <button @click="showViewModal = false" class="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-xl">
-          &times;
-        </button>
-        <h2 class="text-xl font-bold mb-4">Part Details</h2>
-        <div class="flex space-x-6">
-          <img :src="selected.photo" alt="" class="w-32 h-32 object-cover rounded" />
-          <div class="space-y-2">
-            <p><strong>Name:</strong> <span x-text="selected.name"></span></p>
-            <p><strong>Category:</strong> <span x-text="selected.category"></span></p>
-            <p><strong>Description:</strong> <span x-text="selected.description"></span></p>
-            <p><strong>Brand:</strong> <span x-text="selected.supplier"></span></p>
-            <p><strong>Status:</strong> <span x-text="selected.status"></span></p>
-          </div>
-        </div>
       </div>
     </div>
 
