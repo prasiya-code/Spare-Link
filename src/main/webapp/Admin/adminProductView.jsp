@@ -104,12 +104,12 @@
                           class="bg-[#06b6d4] text-white px-3 py-1 rounded shadow hover:bg-[#0891b2] transition flex items-center">
                           <i class="fas fa-eye mr-1"></i> View
                         </button>
-						<form action="/Admin/edit-part.jsp" method="get">
-						  <input type="hidden" name="id" value="${product.id}" />
-						  <button type="submit"
-						    class="bg-yellow-400 text-white px-3 py-1 rounded shadow hover:bg-yellow-500 transition flex items-center">
-						    <i class="fas fa-edit mr-1"></i> Edit
-						  </button>
+						<form action="${pageContext.request.contextPath}/Admin/edit-part.jsp" method="get">
+  							<input type="hidden" name="id" value="${product.id}" />
+  								<button type="submit"
+    								class="bg-yellow-400 text-white px-3 py-1 rounded shadow hover:bg-yellow-500 transition flex items-center">
+    									<i class="fas fa-edit mr-1"></i> Edit
+  								</button>
 						</form>
 
 
