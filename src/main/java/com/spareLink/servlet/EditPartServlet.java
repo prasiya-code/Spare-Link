@@ -81,7 +81,7 @@ public class EditPartServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("Adin/error.jsp");
+            response.sendRedirect("error.jsp");
         }
     }
 }

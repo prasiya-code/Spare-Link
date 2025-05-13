@@ -31,5 +31,43 @@ public class BrandService {
 
         return brandList;
     }
+    
+    public boolean insertBrand(String name) {
+    	String sql = "INSERT INTO brands (name) VALUES (?)";
+    	
+    	try(Connection conn = DBConnector.getConnection();
+    		PreparedStatement stmt = conn.prepareStatement(sql)){
+    		
+    		stmt.setString(1, name);
+    		int rowInserted = stmt.executeUpdate();
+    		
+    		return rowInserted > 0;
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return false;
+    }
+    
+    public boolean brandExists(String name) {
+        String sql = "SELECT COUNT(*) FROM brands WHERE LOWER(name) = LOWER(?)";
+        
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, name.trim());
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
+
 }
 

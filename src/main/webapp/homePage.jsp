@@ -2,16 +2,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
-<html lang="en" x-data="{ open: false, selectedProduct: {}, quantity: 1 }">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>SpareLink - Home</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/46b998f154.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body x-data="{ open: false, selectedProduct: {}, quantity: 1 }" class="bg-gray-100 text-gray-800 font-sans">
 
   <%@ include file="header.jsp" %>
 
@@ -20,10 +23,9 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       <c:forEach var="product" items="${spare_parts}">
-        
-        <!-- Set the image path and other properties here -->
+
         <c:set var="imagePath" value="${pageContext.request.contextPath}/images/${product.id}.jpg" />
-        <c:set var="productName" value="${product.name}" />
+        <c:set var="productName" value="${product.name}" /> 
         <c:set var="productPrice" value="${product.price}" />
         <c:set var="productDescription" value="${product.description}" />
         <c:set var="productBrand" value="${product.brandName}" />
@@ -33,15 +35,16 @@
         <div 
           class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer"
           x-data="{ 
-            image: '${imagePath}',
-            name: '${productName}',
-            price: '${productPrice}',
-            description: '${productDescription}',
-            brandName: '${productBrand}',
-            categoryName: '${productCategory}' }"
+            image: '${imagePath}', 
+            name: '${productName}', 
+            price: '${productPrice}', 
+            description: '${productDescription}', 
+            brandName: '${productBrand}', 
+            categoryName: '${productCategory}' 
+          }"
           @click="open = true; selectedProduct = { 
             image, name, price, description, brandName, categoryName }; quantity = 1;">
-          
+
           <img :src="image" alt="Product Image" class="w-full h-48 object-contain p-4">
           <div class="p-4">
             <h3 class="text-lg font-semibold mb-2" x-text="name"></h3>
@@ -51,12 +54,12 @@
             </button>
           </div>
         </div>
-        
+
       </c:forEach>
     </div>
   </main>
 
-  <!-- Modal -->
+  <!-- Product Modal -->
   <div 
     x-show="open" 
     x-cloak 
@@ -75,11 +78,13 @@
           <p class="text-cyan-600 font-bold text-lg mb-4">LKR <span x-text="selectedProduct.price"></span></p>
           <p class="text-gray-500 mb-2">Brand: <span x-text="selectedProduct.brandName"></span></p>
           <p class="text-gray-500 mb-4">Category: <span x-text="selectedProduct.categoryName"></span></p>
+
           <div class="flex items-center space-x-3 mb-4">
             <button @click="quantity > 1 ? quantity-- : quantity" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">-</button>
             <span x-text="quantity" class="text-lg font-semibold"></span>
             <button @click="quantity++" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">+</button>
           </div>
+
           <button class="bg-green-600 text-white w-full py-2 rounded hover:bg-green-700 mb-2">Buy Now</button>
           <button class="bg-cyan-600 text-white w-full py-2 rounded hover:bg-cyan-700">Add to Cart</button>
         </div>

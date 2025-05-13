@@ -116,5 +116,52 @@ public class SparePartService {
         }
     }
 
+        public int getTotalParts() {
+            int total = 0;
+            try (Connection con = DBConnector.getConnection();
+                 Statement stmt = con.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM spare_parts")) {
+                if (rs.next()) total = rs.getInt(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return total;
+        }
+
+        public int getLowStockCount() {
+            int count = 0;
+            try (Connection con = DBConnector.getConnection();
+                 Statement stmt = con.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM spare_parts WHERE quantity <= 5")) {
+                if (rs.next()) count = rs.getInt(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return count;
+        }
+
+        public int getTotalCategories() {
+            int count = 0;
+            try (Connection con = DBConnector.getConnection();
+                 Statement stmt = con.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM categories")) {
+                if (rs.next()) count = rs.getInt(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return count;
+        }
+        
+        public int getTotalUsers() {
+            int count = 0;
+            try (Connection con = DBConnector.getConnection();
+                 Statement stmt = con.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM users")) {
+                if (rs.next()) count = rs.getInt(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return count;
+        }
 
 }
