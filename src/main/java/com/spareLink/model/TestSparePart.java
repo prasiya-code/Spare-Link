@@ -65,7 +65,4 @@ public class TestSparePart {
 		this.categoryId = categoryId;
 	}
 
-    // Getters and Setters
-    // ...
-    
 }

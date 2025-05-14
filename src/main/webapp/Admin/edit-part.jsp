@@ -57,15 +57,12 @@
         </div>
 
         <!-- Status -->
-        <div class="mb-4">
-            <label class="block mb-2 text-sm font-semibold text-cyan-300">Stock Status</label>
-            <select name="status" required
-                    class="w-full p-2 bg-[#0f172a] border border-cyan-600 rounded-md text-gray-300">
-                <option value="InStock" <%= part.getStatus().equals("InStock") ? "selected" : "" %>>In Stock</option>
-                <option value="LowStock" <%= part.getStatus().equals("LowStock") ? "selected" : "" %>>Low Stock</option>
-                <option value="OutOfStock" <%= part.getStatus().equals("OutOfStock") ? "selected" : "" %>>Out of Stock</option>
-            </select>
-        </div>
+		<div class="mb-4">
+		    <label class="block mb-2 text-sm font-semibold text-cyan-300">Stock Status (Auto)</label>
+		    <input type="text" id="autoStatus" readonly
+		           value="<%= part.getStatus() %>"
+		           class="w-full p-2 bg-gray-800 text-cyan-300 border border-cyan-600 rounded-md">
+		</div>
 
         <!-- Brand -->
         <div class="mb-4">

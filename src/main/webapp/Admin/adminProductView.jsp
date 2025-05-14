@@ -81,7 +81,7 @@
                     <td class="py-2 px-4">${product.description}</td>
                     <td class="py-2 px-4">${product.brandName}</td>
                     <td class="py-2 px-4">LKR ${product.price}</td>
-                    <td class="py-2 px-4">In Stock</td>
+                    <td class="py-2 px-4">${product.status}</td>
                     <td class="py-2 px-4">
                       <div class="flex space-x-2">
                         <!-- Edit Button -->

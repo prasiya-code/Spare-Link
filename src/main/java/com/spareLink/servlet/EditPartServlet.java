@@ -61,12 +61,34 @@ public class EditPartServlet extends HttpServlet {
             String name = request.getParameter("name");
             double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
-            String status = request.getParameter("status");
             int brandId = Integer.parseInt(request.getParameter("brand_id"));
             int categoryId = Integer.parseInt(request.getParameter("category_id"));
             String description = request.getParameter("description");
 
-            // Get existing spare part to retain image
+            // Validation
+            if (price <= 1500) {
+                request.setAttribute("error", "Price must be greater than 1500 LKR.");
+                response.sendRedirect("edit-part.jsp?id=" + id + "&error=price");
+                return;
+            }
+
+            if (description == null || description.trim().length() <= 20) {
+                request.setAttribute("error", "Description must be more than 20 characters.");
+                response.sendRedirect("edit-part.jsp?id=" + id + "&error=desc");
+                return;
+            }
+
+            // Auto stock status
+            String status;
+            if (quantity == 0) {
+                status = "OutOfStock";
+            } else if (quantity >= 5 && quantity <= 15) {
+                status = "LowStock";
+            } else {
+                status = "InStock";
+            }
+
+            // Retain existing image
             SparePart existing = sparePartService.getSparePartById(id);
             String image = existing != null ? existing.getImage() : "";
 
@@ -84,4 +106,5 @@ public class EditPartServlet extends HttpServlet {
             response.sendRedirect("error.jsp");
         }
     }
+
 }

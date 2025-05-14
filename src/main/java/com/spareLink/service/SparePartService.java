@@ -89,10 +89,6 @@ public class SparePartService {
                 part.setBrandName(rs.getString("brand_name"));
                 part.setCategoryName(rs.getString("category_name"));
 
-
-                // Note: brand_name and category_name are optional here
-                // If needed, extend the SparePart model to include those
-
                 spareParts.add(part);
                 
             }
