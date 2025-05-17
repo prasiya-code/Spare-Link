@@ -45,6 +45,14 @@ public class AddPartFormServlet extends HttpServlet {
             // Step 1: Validate the product using ProductValidator
             String validationError = ProductValidator.validate(name, price, quantity, description);
             if (validationError != null) {
+            	
+            	// Load brand and category lists again
+                List<Brand> brands = brandService.getAllBrands(); // Replace with your actual brand service
+                List<Category> categories = categoryService.getAllCategories(); // Replace with your actual category service
+                
+                request.setAttribute("brands", brands);
+                request.setAttribute("categories", categories);
+
                 // Redirect to the form with error message if validation fails
                 request.setAttribute("error", validationError);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("Admin/add-part.jsp");
@@ -68,6 +76,8 @@ public class AddPartFormServlet extends HttpServlet {
             stmt.setString(7, description);
             stmt.executeUpdate();
 
+            
+            //check
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 productId = rs.getInt(1);

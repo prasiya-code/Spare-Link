@@ -95,7 +95,7 @@
   <div class="bg-[#1e293b] p-6 rounded-xl shadow">
     <div class="text-lg font-semibold mb-4">Usage Trends</div>
     <div class="text-center text-gray-500 text-sm italic">
-      📊 Chart goes here (Integrate with Chart.js or ApexCharts)
+       Chart goes here (Integrate with Chart.js or ApexCharts)
     </div>
     <div class="h-48 bg-[#0f172a] rounded mt-4 flex items-center justify-center">
       <span class="text-[#06b6d4]">[Chart Placeholder]</span>
